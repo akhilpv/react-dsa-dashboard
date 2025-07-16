@@ -1,6 +1,11 @@
-import React from 'react';
-
-const SearchBar = ({ search, setSearch, sortBy, setSortBy }) => {
+import React from "react";
+type SearchBarProps = {
+  search: string;
+  setSearch: (value: string) => void;
+  sortBy: string;
+  setSortBy: (value: string) => void;
+};
+const SearchBar: React.FC<SearchBarProps> = ({ search, setSearch, sortBy, setSortBy }) => {
   return (
     <div className="flex gap-4 mb-6">
       <input

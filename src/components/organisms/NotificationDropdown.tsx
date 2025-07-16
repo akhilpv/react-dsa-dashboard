@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const NotificationDropdown = ({ onClose }: { onClose: () => void }) => {
     const notifications = useSelector((state: RootState) => state.notification.notifications);
     const dispatch = useDispatch();
-    const navigate = useDispatch();
+    const navigate = useNavigate();
     return (
         <div className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-md border z-50">
             <div className="flex justify-between items-center px-4 py-2 border-b">
