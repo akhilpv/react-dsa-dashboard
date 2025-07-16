@@ -18,7 +18,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ search, setSearch, sortBy, setSor
       />
       <select
         value={sortBy}
-        onChange={(e) => setSortBy(e.target.value)}
+        onChange={(e) => setSortBy(e.target.value as SortType)}
         className="px-3 py-2 border border-gray-300 rounded"
       >
         <option value="name">Sort by Name</option>
