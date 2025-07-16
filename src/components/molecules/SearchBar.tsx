@@ -5,7 +5,7 @@ type SearchBarProps = {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   sortBy: SortType;
   setSortBy: React.Dispatch<React.SetStateAction<SortType>>;
-};
+}; 
 const SearchBar: React.FC<SearchBarProps> = ({ search, setSearch, sortBy, setSortBy }) => {
   return (
     <div className="flex gap-4 mb-6">
