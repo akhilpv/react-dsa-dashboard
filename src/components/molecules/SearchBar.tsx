@@ -1,9 +1,10 @@
 import React from "react";
+type SortType = 'name' | 'price';
 type SearchBarProps = {
   search: string;
-  setSearch: (value: string) => void;
-  sortBy: string;
-  setSortBy: (value: string) => void;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  sortBy: SortType;
+  setSortBy: React.Dispatch<React.SetStateAction<SortType>>;
 };
 const SearchBar: React.FC<SearchBarProps> = ({ search, setSearch, sortBy, setSortBy }) => {
   return (
