@@ -4,29 +4,42 @@ import { addProduct, undo, redo } from '../slices/productSlice';
 import { useToastQueue } from '../../notifications/hooks/useToastQueue';
 import type { RootState } from '../../../app/store';
 
-const UndoRedoTab = () => {
+const UndoRedoPage = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
+  const [sku, setSku] = useState('');
+  const [status, setStatus] = useState<'in_stock' | 'out_of_stock'>('in_stock');
+  const [stock, setStock] = useState('');
   const dispatch = useDispatch();
   const showToast = useToastQueue();
+  
   const products = useSelector((state: RootState) => state.products.products);
 
   const handleAdd = () => {
-    if (!name || !price) {
-      showToast('Please enter both name and price', 'error', 'Add Product');
+    if (!name || !price || !sku || !stock) {
+      showToast('Please fill all fields', 'error', 'Add Product');
       return;
     }
-    dispatch(
-      addProduct({
-        id: Date.now(),
-        name,
-        price: parseFloat(price),
-      })
-    );
-    showToast(`Added "${name}" successfully`, 'success', 'Add Product');
-    setName('');
-    setPrice('');
-  };
+
+  dispatch(
+    addProduct({
+      id: Date.now(),
+      name,
+      price: parseFloat(price),
+      sku,
+      status,
+      stock: parseInt(stock),
+    })
+  );
+
+  showToast(`Added "${name}" successfully`, 'success', 'Add Product');
+
+  setName('');
+  setPrice('');
+  setSku('');
+  setStock('');
+  setStatus('in_stock');
+};
 
   return (
     <div>
@@ -46,6 +59,27 @@ const UndoRedoTab = () => {
           onChange={(e) => setPrice(e.target.value)}
           placeholder="Price"
           className="border p-2 rounded w-32"
+        />
+        <input
+          value={sku}
+          onChange={(e) => setSku(e.target.value)}
+          placeholder="SKU"
+          className="border p-2 rounded w-32"
+        />
+        <select
+          value={status}
+          onChange={(e) => setStatus(e.target.value as 'in_stock' | 'out_of_stock')}
+          className="border p-2 rounded w-40"
+        >
+          <option value="in_stock">In Stock</option>
+          <option value="out_of_stock">Out of Stock</option>
+        </select>
+        <input
+          type="number"
+          value={stock}
+          onChange={(e) => setStock(e.target.value)}
+          placeholder="Stock"
+          className="border p-2 rounded w-24"
         />
         <button
           onClick={handleAdd}
@@ -74,8 +108,11 @@ const UndoRedoTab = () => {
             key={p.id}
             className="flex justify-between p-2 bg-gray-100 rounded"
           >
-            <span>{p.name}</span>
-            <span>${p.price}</span>
+            <div>
+              <strong>{p.name}</strong> (SKU: {p.sku})<br />
+              <span>Status: {p.status}</span> | <span>Stock: {p.stock}</span>
+            </div>
+            <span className="text-right font-medium">${p.price}</span>
           </li>
         ))}
       </ul>
@@ -83,4 +120,4 @@ const UndoRedoTab = () => {
   );
 };
 
-export default UndoRedoTab;
+export default UndoRedoPage;

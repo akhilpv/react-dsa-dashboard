@@ -1,12 +1,11 @@
 import React from "react";
-type SortType = 'name' | 'price';
-type SearchBarProps = {
-  search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-  sortBy: SortType;
-  setSortBy: React.Dispatch<React.SetStateAction<SortType>>;
-};  
-const SearchBar: React.FC<SearchBarProps> = ({ search, setSearch, sortBy, setSortBy }) => {
+import type { SearchBarProps, SortType,StockFilterType } from "../../type/search.types";
+const SearchBar: React.FC<SearchBarProps> = ({   search,
+  setSearch,
+  sortBy,
+  setSortBy,
+  stockFilter,
+  setStockFilter, }) => {
   return (
     <div className="flex gap-4 mb-6">
       <input
@@ -16,6 +15,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ search, setSearch, sortBy, setSor
         placeholder="Search product..."
         className="w-full px-4 py-2 border border-gray-300 rounded"
       />
+      <select
+        value={stockFilter}
+        onChange={(e) => setStockFilter(e.target.value as StockFilterType)}
+        className="px-3 py-2 border border-gray-300 rounded"
+      >
+        <option value="all">All</option>
+        <option value="in-stock">In Stock</option>
+        <option value="out-of-stock">Out of Stock</option>
+      </select>
+
       <select
         value={sortBy}
         onChange={(e) => setSortBy(e.target.value as SortType)}

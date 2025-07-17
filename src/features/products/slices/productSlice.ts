@@ -19,9 +19,9 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     addProduct(state, action: PayloadAction<Product>) {
-      state.undoStack.push([...state.products]); // save current
+      state.undoStack.push([...state.products]); 
       state.products.push(action.payload);
-      state.redoStack = []; // clear redo
+      state.redoStack = []; 
     },
     undo(state) {
       if (state.undoStack.length > 0) {
