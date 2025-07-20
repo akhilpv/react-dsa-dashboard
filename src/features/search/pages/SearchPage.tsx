@@ -3,21 +3,20 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../../../app/store';
 import SearchBar from '../../../components/molecules/SearchBar';
 import ProductList from '../../../components/organisms/ProductList';
+import type { CategoryFilterType } from '../../../type/search.types';
 
-type StockFilterType = 'all' | 'in-stock' | 'out-of-stock';
-type SearchBarProps = {
-  search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-  sortBy: SortType;
-  setSortBy: React.Dispatch<React.SetStateAction<SortType>>;
-  stockFilter: StockFilterType;
-  setStockFilter: React.Dispatch<React.SetStateAction<StockFilterType>>;
-};
 const SearchPage = () => {
     const [search, setSearch] = useState('');
     const [sortBy, setSortBy] = useState<'name' | 'price'>('name');
     const [stockFilter, setStockFilter] = useState<'all' | 'in-stock' | 'out-of-stock'>('all');
+    const [categoryFilter, setCategoryFilter] = useState<CategoryFilterType>('all');
+
     const products = useSelector((state: RootState) => state.products.products);
+
+    const categories = useMemo(() => {
+        const unique = new Set(products.map((p) => p.category));
+        return Array.from(unique);
+    }, [products]);
 
     const statusMap = useMemo(() => {
         const map = new Map<number, string>();
@@ -27,6 +26,14 @@ const SearchPage = () => {
         return map;
     }, [products]);
 
+    const stockMap = useMemo(()=>{
+        const map: Record<number, boolean> = {};
+        products.forEach((product) => {
+        map[product.id] = product.stock > 0;
+        });
+        return map;
+    },[products])
+
     const filtered = useMemo(() => {
         let result = products.filter(p =>
             p.name.toLowerCase().includes(search.toLowerCase())
@@ -34,20 +41,20 @@ const SearchPage = () => {
 
         if (stockFilter !== 'all') {
             result = result.filter(p =>
-            (p.stock > 0 && stockFilter === 'in-stock') ||
-            (p.stock === 0 && stockFilter === 'out-of-stock')
+                stockFilter === 'in-stock' ? stockMap[p.id] : stockMap[p.id]
             );
+        }
+        if (categoryFilter !== 'all') {
+            result = result.filter((p) => p.category === categoryFilter);
         }
 
         return result.sort((a, b) =>
             sortBy === 'price' ? a.price - b.price : a.name.localeCompare(b.name)
         );
-    }, [products, search, sortBy, stockFilter]);
+    }, [products, search, sortBy, stockFilter,categoryFilter]);
 
-    const outOfStockCount = useMemo(
-        () => products.filter((p) => statusMap.get(p.id) === 'out-of-stock').length,
-        [statusMap, products]
-    );
+    const outOfStockCount = useMemo(() => products.filter((p) => statusMap.get(p.id) === 'out-of-stock').length,
+        [statusMap, products]);
 
     return (
         <>
@@ -60,7 +67,16 @@ const SearchPage = () => {
                  {outOfStockCount} product(s) are out of stock!
                 </div>
             )}
-            <SearchBar {...{ search, setSearch, sortBy, setSortBy,stockFilter,setStockFilter }} />
+            <SearchBar {...{ 
+                search, 
+                setSearch, 
+                sortBy, 
+                setSortBy,
+                stockFilter,
+                setStockFilter,
+                categoryFilter,
+                setCategoryFilter,
+                categories }} />
             <ProductList products={filtered} statusMap={statusMap}/>
         </>
     );

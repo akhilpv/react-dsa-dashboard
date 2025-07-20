@@ -25,6 +25,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, statusMap }) => {
               <p className="text-sm text-gray-600">Status: {status}</p>
               <p className="text-sm text-gray-600">SKU: {product.sku}</p>
               <p className="text-sm text-gray-600">Stock: {product.stock}</p>
+              <p className="text-sm text-gray-600">Category: {product.category}</p> 
             </div>
             <span className="text-right text-indigo-700 font-medium mt-2 sm:mt-0">
               ${product.price}

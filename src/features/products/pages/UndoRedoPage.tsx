@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addProduct, undo, redo } from '../slices/productSlice';
 import { useToastQueue } from '../../notifications/hooks/useToastQueue';
 import type { RootState } from '../../../app/store';
+import { Link } from 'react-router-dom';
 
 const UndoRedoPage = () => {
   const [name, setName] = useState('');
@@ -10,6 +11,8 @@ const UndoRedoPage = () => {
   const [sku, setSku] = useState('');
   const [status, setStatus] = useState<'in_stock' | 'out_of_stock'>('in_stock');
   const [stock, setStock] = useState('');
+  const [category, setCategory] = useState('');
+
   const dispatch = useDispatch();
   const showToast = useToastQueue();
   
@@ -29,6 +32,7 @@ const UndoRedoPage = () => {
       sku,
       status,
       stock: parseInt(stock),
+      category, 
     })
   );
 
@@ -39,6 +43,7 @@ const UndoRedoPage = () => {
   setSku('');
   setStock('');
   setStatus('in_stock');
+  setCategory('');
 };
 
   return (
@@ -81,6 +86,12 @@ const UndoRedoPage = () => {
           placeholder="Stock"
           className="border p-2 rounded w-24"
         />
+        <input
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          placeholder="Category"
+          className="border p-2 rounded w-40"
+        />
         <button
           onClick={handleAdd}
           className="bg-blue-600 text-white px-4 rounded"
@@ -109,8 +120,12 @@ const UndoRedoPage = () => {
             className="flex justify-between p-2 bg-gray-100 rounded"
           >
             <div>
-              <strong>{p.name}</strong> (SKU: {p.sku})<br />
+              <Link to={`/products/${p.id}`} className="text-blue-600 underline">
+                <strong>{p.name}</strong> (SKU: {p.sku})
+              </Link>
+              <br />
               <span>Status: {p.status}</span> | <span>Stock: {p.stock}</span>
+              <span>Category: {p.category}</span> 
             </div>
             <span className="text-right font-medium">${p.price}</span>
           </li>

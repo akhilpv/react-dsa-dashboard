@@ -5,7 +5,10 @@ const SearchBar: React.FC<SearchBarProps> = ({   search,
   sortBy,
   setSortBy,
   stockFilter,
-  setStockFilter, }) => {
+  setStockFilter,
+  categoryFilter,
+  setCategoryFilter,
+  categories }) => {
   return (
     <div className="flex gap-4 mb-6">
       <input
@@ -24,7 +27,14 @@ const SearchBar: React.FC<SearchBarProps> = ({   search,
         <option value="in-stock">In Stock</option>
         <option value="out-of-stock">Out of Stock</option>
       </select>
-
+      <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} className="p-2 border rounded">
+        <option value="all">All Categories</option>
+        {categories.map((cat) => (
+          <option key={cat} value={cat}>
+            {cat}
+          </option>
+        ))}
+      </select>
       <select
         value={sortBy}
         onChange={(e) => setSortBy(e.target.value as SortType)}

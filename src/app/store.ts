@@ -4,6 +4,7 @@ import notificationReducer from '../features/notifications/slices/notificationSl
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from 'redux';
+import productTabsReducer from  '../features/products/slices/tabsSlice'
 const persistConfig = {
   key: 'root',
   storage,
@@ -12,6 +13,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   products: productReducer,
   notification: notificationReducer,
+  productTabs: productTabsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
