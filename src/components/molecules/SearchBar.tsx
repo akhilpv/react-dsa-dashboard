@@ -1,5 +1,8 @@
 import React from "react";
 import type { SearchBarProps, SortType,StockFilterType } from "../../type/search.types";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../app/store";
+import { addSearchTerm } from "../../features/search/slices/recentSearchSlice";
 const SearchBar: React.FC<SearchBarProps> = ({   search,
   setSearch,
   sortBy,
@@ -9,12 +12,22 @@ const SearchBar: React.FC<SearchBarProps> = ({   search,
   categoryFilter,
   setCategoryFilter,
   categories }) => {
+    const dispatch = useDispatch<AppDispatch>();
+
+    const handleSearch = () => {
+      const trimmed = search.trim();
+      if (trimmed) {
+        dispatch(addSearchTerm(trimmed));
+      }
+    };
+  
   return (
     <div className="flex gap-4 mb-6">
       <input
         type="text"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         placeholder="Search product..."
         className="w-full px-4 py-2 border border-gray-300 rounded"
       />

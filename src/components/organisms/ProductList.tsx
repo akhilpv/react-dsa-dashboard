@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import type { Product } from '../../features/products/types/product.types';
 
 interface ProductListProps {
@@ -7,7 +7,20 @@ interface ProductListProps {
 }
 
 const ProductList: React.FC<ProductListProps> = ({ products, statusMap }) => {
+
+  const prefixPrice = useMemo(() => {
+    const prefix = new Array(products.length).fill(0);
+    for (let i = 0; i < products.length; i++) {
+      prefix[i] = (prefix[i - 1] || 0) + products[i].price;
+    }
+    return prefix;
+  }, [products]);
+  
   return (
+    <div className="space-y-4">
+    <h2 className="text-lg font-semibold text-gray-700">
+        🧾 Grand Total: ${prefixPrice[prefixPrice.length - 1] || 0}
+      </h2>
     <ul className="space-y-3">
       {products.map((product) => {
         const status = statusMap.get(product.id) || 'unknown';
@@ -34,6 +47,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, statusMap }) => {
         );
       })}
     </ul>
+    </div>
   );
 };
 

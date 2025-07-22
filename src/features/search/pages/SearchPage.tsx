@@ -4,7 +4,7 @@ import type { RootState } from '../../../app/store';
 import SearchBar from '../../../components/molecules/SearchBar';
 import ProductList from '../../../components/organisms/ProductList';
 import type { CategoryFilterType } from '../../../type/search.types';
-
+import RecentSearches from '../../../components/organisms/RecentSearches';
 const SearchPage = () => {
     const [search, setSearch] = useState('');
     const [sortBy, setSortBy] = useState<'name' | 'price'>('name');
@@ -77,6 +77,7 @@ const SearchPage = () => {
                 categoryFilter,
                 setCategoryFilter,
                 categories }} />
+            <RecentSearches />
             <ProductList products={filtered} statusMap={statusMap}/>
         </>
     );
