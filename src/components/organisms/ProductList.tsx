@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import type { Product } from '../../features/products/types/product.types';
-
+import { getNextGreaterPrices } from '../../utils/priceTrend';
+import { ArrowUpRight,ArrowDown } from 'lucide-react';
 interface ProductListProps {
   products: Product[];
   statusMap: Map<number, string>; 
@@ -16,16 +17,21 @@ const ProductList: React.FC<ProductListProps> = ({ products, statusMap }) => {
     return prefix;
   }, [products]);
   
+  const priceTrend = useMemo(() => {
+    const prices = products.map((p) => p.price);
+    return getNextGreaterPrices(prices);
+  }, [products]);
+
   return (
     <div className="space-y-4">
     <h2 className="text-lg font-semibold text-gray-700">
         🧾 Grand Total: ${prefixPrice[prefixPrice.length - 1] || 0}
       </h2>
     <ul className="space-y-3">
-      {products.map((product) => {
+      {products.map((product,index) => {
         const status = statusMap.get(product.id) || 'unknown';
         const isOutOfStock = status === 'out-of-stock';
-
+        const hasGreaterPriceAhead = priceTrend[index] > product.price;
         return (
           <li
             key={product.id}
@@ -43,6 +49,11 @@ const ProductList: React.FC<ProductListProps> = ({ products, statusMap }) => {
             <span className="text-right text-indigo-700 font-medium mt-2 sm:mt-0">
               ${product.price}
             </span>
+            {hasGreaterPriceAhead ? (
+              <ArrowUpRight className="text-green-600" title="Price may rise ahead" />
+            ) : (
+              <ArrowDown className="text-red-500" title="No greater price ahead" />
+            )}
           </li>
         );
       })}
