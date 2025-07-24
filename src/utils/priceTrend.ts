@@ -12,3 +12,18 @@ export const getNextGreaterPrices = (prices: number[]): number[] => {
 
     return result;
 };
+
+export const buildNextCheaperMap = (prices: number[]): Map<number, number> => {
+  const stack: number[] = [];
+  const result = new Map<number, number>();
+
+  for (let i = 0; i < prices.length; i++) {
+    while (stack.length && prices[i] < prices[stack[stack.length - 1]]) {
+      const idx = stack.pop()!;
+      result.set(idx, i);
+    }
+    stack.push(i);
+  }
+
+  return result;
+};
