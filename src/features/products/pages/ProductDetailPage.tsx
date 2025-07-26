@@ -29,7 +29,7 @@ const ProductDetailPage = () => {
         onTabChange={changeTab}
       />
 
-      <div className="mt-6">
+      <div className="mt-6">~
         {activeTab === 'overview' && (
           <div>
             <p><strong>SKU:</strong> {product.sku}</p>

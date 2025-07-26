@@ -12,6 +12,7 @@ const UndoRedoPage = () => {
   const [status, setStatus] = useState<'in_stock' | 'out_of_stock'>('in_stock');
   const [stock, setStock] = useState('');
   const [category, setCategory] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
 
   const dispatch = useDispatch();
   const showToast = useToastQueue();
@@ -19,7 +20,7 @@ const UndoRedoPage = () => {
   const products = useSelector((state: RootState) => state.products.products);
 
   const handleAdd = () => {
-    if (!name || !price || !sku || !stock) {
+    if (!name || !price || !sku || !stock || !expiryDate) {
       showToast('Please fill all fields', 'error', 'Add Product');
       return;
     }
@@ -33,6 +34,7 @@ const UndoRedoPage = () => {
       status,
       stock: parseInt(stock),
       category, 
+      expiryDate,
     })
   );
 
@@ -44,6 +46,7 @@ const UndoRedoPage = () => {
   setStock('');
   setStatus('in_stock');
   setCategory('');
+  setExpiryDate('');
 };
 
   return (
@@ -92,6 +95,12 @@ const UndoRedoPage = () => {
           placeholder="Category"
           className="border p-2 rounded w-40"
         />
+        <input
+          type="date"
+          value={expiryDate}
+          onChange={(e) => setExpiryDate(e.target.value)}
+          className="border p-2 rounded w-48"
+        />
         <button
           onClick={handleAdd}
           className="bg-blue-600 text-white px-4 rounded"
@@ -125,7 +134,9 @@ const UndoRedoPage = () => {
               </Link>
               <br />
               <span>Status: {p.status}</span> | <span>Stock: {p.stock}</span>
+              
               <span>Category: {p.category}</span> 
+              <span className="text-sm text-gray-600">Expiry: {p.expiryDate}</span>
             </div>
             <span className="text-right font-medium">${p.price}</span>
           </li>
