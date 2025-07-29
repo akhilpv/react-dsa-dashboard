@@ -14,13 +14,19 @@ const Sidebar = () => {
           to="/undo"
           className={({ isActive }) => `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`}
         >
-          🔁 Undo / Redo (Day 1)
+          🔁 Undo / Redo 
         </NavLink>
         <NavLink
           to="/search"
           className={({ isActive }) => `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`}
         >
-          🔍 Search + Sort (Day 2)
+          🔍 Search + Sort
+        </NavLink>
+        <NavLink
+          to="/budget-products"
+          className={({ isActive }) => `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`}
+        >
+          🪙 Budget Products 
         </NavLink>
       </nav>
     </aside>

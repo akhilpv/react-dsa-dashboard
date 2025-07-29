@@ -7,6 +7,9 @@ import {
 import { ArrowUpRight, ArrowDown, LayoutGrid, List } from 'lucide-react';
 import { getMinPriceIndicesPerBatch } from '../../utils/slidingWindowMin';
 import { RecommendedCombo } from './RecommendedCombo';
+import { ExpiringProductsPanel } from './ExpiringProductsPanel';
+import { RelatedProducts } from '../molecules/RelatedProducts';
+import { useRelatedProducts } from '../../features/products/hooks/useRelatedProducts';
 interface ProductListProps {
   products: Product[];
   statusMap: Map<number, string>;
@@ -37,6 +40,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, statusMap }) => {
   return (
     <div className="space-y-4">
       {/* Header Section */}
+      <ExpiringProductsPanel />
       <RecommendedCombo products={products} target={target} />
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-gray-700">
@@ -128,6 +132,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, statusMap }) => {
                       🏷️ Lowest in Batch
                     </span>
                   )}
+                  <RelatedProducts related={useRelatedProducts(products, product.id)} />
                 </div>
                 <div className="flex flex-col items-end justify-between sm:items-end">
                   <span className="text-right text-indigo-700 font-medium">${product.price}</span>
