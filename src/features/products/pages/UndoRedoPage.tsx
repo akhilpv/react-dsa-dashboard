@@ -20,7 +20,7 @@ const UndoRedoPage = () => {
   const products = useSelector((state: RootState) => state.products.products);
 
   const handleAdd = () => {
-    if (!name || !price || !sku || !stock || expiryDate) {
+    if (!name || !price || !sku || !stock || !expiryDate) {
       showToast('Please fill all fields', 'error', 'Add Product');
       return;
     }
