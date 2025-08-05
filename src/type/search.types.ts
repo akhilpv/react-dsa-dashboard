@@ -11,4 +11,5 @@ export type SearchBarProps = {
   categoryFilter: CategoryFilterType;
   setCategoryFilter: React.Dispatch<React.SetStateAction<CategoryFilterType>>;
   categories: string[];
+  onExactSearch?: (input: string) => void;
 };

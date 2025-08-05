@@ -18,10 +18,17 @@ const UndoRedoPage = () => {
   const showToast = useToastQueue();
   
   const products = useSelector((state: RootState) => state.products.products);
-
+  
+  const nameSet = new Set(products.map(p => p.name.toLowerCase()));
+  const categories = useSelector((state: RootState) => state.categories.list);
+  console.log("categories",categories)
   const handleAdd = () => {
     if (!name || !price || !sku || !stock || !expiryDate) {
       showToast('Please fill all fields', 'error', 'Add Product');
+      return;
+    }
+    if (nameSet.has(name.toLowerCase())) {
+      showToast(`"${name}" already exists`, 'error', 'Duplicate Product');
       return;
     }
 
@@ -89,12 +96,19 @@ const UndoRedoPage = () => {
           placeholder="Stock"
           className="border p-2 rounded w-24"
         />
-        <input
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          placeholder="Category"
-          className="border p-2 rounded w-40"
-        />
+        <select
+  value={category}
+  onChange={(e) => setCategory(e.target.value)}
+  className="border p-2 rounded w-40"
+>
+  <option value="">Select Category</option>
+  {categories.map((cat) => (
+    <option key={cat.id} value={cat.name}>
+      {cat.name}
+    </option>
+  ))}
+</select>
+
         <input
           type="date"
           value={expiryDate}

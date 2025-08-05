@@ -77,6 +77,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, statusMap }) => {
                     <p className="text-sm text-gray-600">SKU: {product.sku}</p>
                     <p className="text-sm text-gray-600">Stock: {product.stock}</p>
                     <p className="text-sm text-gray-600">Category: {product.category}</p>
+                    <p className="text-sm text-gray-600">ID: {product.id}</p>
                     {nextCheaperIdx !== undefined && (
                       <p className="text-sm text-green-700 mt-1">
                         💡 Cheaper ahead: {products[nextCheaperIdx].name} – ${products[nextCheaperIdx].price}
@@ -122,6 +123,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, statusMap }) => {
                   <p className="text-sm text-gray-600">SKU: {product.sku}</p>
                   <p className="text-sm text-gray-600">Stock: {product.stock}</p>
                   <p className="text-sm text-gray-600">Category: {product.category}</p>
+                  <p className="text-sm text-gray-600">ID: {product.id}</p>
                   {nextCheaperIdx !== undefined && (
                     <p className="text-sm text-green-700 mt-1">
                       💡 Cheaper ahead: {products[nextCheaperIdx].name} – ${products[nextCheaperIdx].price}

@@ -6,6 +6,10 @@ import ProductDetailPage from '../features/products/pages/ProductDetailPage';
 import Dashboard from '../features/dashboard/pages/DashboardPage';
 import { BudgetProductPage } from '../features/products/pages/BudgetProductPage';
 import { FilteredProductList } from '../features/products/pages/FilteredProductList';
+import { ProductSearchPage } from '../features/search/pages/ProductSearchPage';
+import CategoryPage from '../features/categories/pages/CategoryPage';
+import { CategorySearchPage } from '../features/categories/pages/CategorySearchPage';
+import { RelatedProductPage } from '../features/products/pages/RelatedProductPage';
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<DashboardLayout />}>
@@ -14,6 +18,10 @@ const AppRoutes = () => (
       <Route path="/products/:productId" element={<ProductDetailPage />} />
       <Route path="/products/filtered" element={<FilteredProductList />} />
       <Route path="/budget-products" element={<BudgetProductPage />} />
+      <Route path="/search-products" element={<ProductSearchPage />} />
+      <Route path="/categories" element={<CategoryPage />} />
+      <Route path="/categories-search" element={<CategorySearchPage />} />
+      <Route path="/related-products" element={<RelatedProductPage />} />
       <Route path="search" element={<SearchPage />} />
     </Route>
   </Routes>

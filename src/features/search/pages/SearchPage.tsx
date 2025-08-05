@@ -38,12 +38,13 @@ const SearchPage = () => {
         let result = products.filter(p =>
             p.name.toLowerCase().includes(search.toLowerCase())
         );
-
+        
         if (stockFilter !== 'all') {
             result = result.filter(p =>
                 stockFilter === 'in-stock' ? stockMap[p.id] : stockMap[p.id]
             );
         }
+       
         if (categoryFilter !== 'all') {
             result = result.filter((p) => p.category === categoryFilter);
         }

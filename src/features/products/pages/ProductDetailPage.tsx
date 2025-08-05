@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../../app/store';
 import { ProductTabs } from '../../../components/organisms/ProductTabs';
 import { useProductTabs } from '../hooks/useProductTabs';
+import { ProductCard } from '../../../components/organisms/ProductCard';
+import { RecentlyViewedProducts } from '../../../components/molecules/RecentlyViewedProducts';
+import { updateRecentlyViewed } from '../../../utils/recentlyViewed';
 
 const tabItems = [
   { id: 'overview', label: 'Overview' },
@@ -14,9 +17,26 @@ const tabItems = [
 const ProductDetailPage = () => {
   const { productId } = useParams<{ productId: string }>();
   const { activeTab, changeTab } = useProductTabs(productId || '');
+  const [recentIds, setRecentIds] = useState<string[]>([]);
+  const products = useSelector((state: RootState) => state.products.products);
   const product = useSelector((state: RootState) =>
     state.products.products.find((p) => p.id.toString() === productId)
   );
+
+  useEffect(() => {
+    if (productId) {
+      const updated = updateRecentlyViewed(productId);
+      setRecentIds(updated);
+    }
+  }, [productId]);
+
+  const relatedProducts = useMemo(() => {
+    if (!product) return [];
+    return products
+      .filter((p) => p.category === product.category && p.id !== product.id)
+      .sort((a, b) => b.popularity - a.popularity) 
+      .slice(0, 4); 
+  }, [product, products]);
 
   if (!product) return <p>Product not found</p>;
 
@@ -29,7 +49,7 @@ const ProductDetailPage = () => {
         onTabChange={changeTab}
       />
 
-      <div className="mt-6">~
+      <div className="mt-6">
         {activeTab === 'overview' && (
           <div>
             <p><strong>SKU:</strong> {product.sku}</p>
@@ -43,6 +63,17 @@ const ProductDetailPage = () => {
           <p><strong>Price:</strong> ${product.price}</p>
         )}
       </div>
+      {relatedProducts.length > 0 && (
+        <div className="mt-10">
+          <h3 className="text-xl font-semibold mb-4">Related Products</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {relatedProducts.map((relProd) => (
+              <ProductCard key={relProd.id} product={relProd} />
+            ))}
+          </div>
+        </div>
+      )}
+      <RecentlyViewedProducts productIds={recentIds} currentProductId={productId!} />
     </div>
   );
 };

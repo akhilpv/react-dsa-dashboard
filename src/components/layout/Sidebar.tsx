@@ -28,6 +28,30 @@ const Sidebar = () => {
         >
           🪙 Budget Products 
         </NavLink>
+        <NavLink
+          to="/search-products"
+          className={({ isActive }) => `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`}
+        >
+          Sarch V2
+        </NavLink>
+        <NavLink
+          to="/categories"
+          className={({ isActive }) => `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`}
+        >
+          Categories
+        </NavLink>
+        <NavLink
+          to="/categories-search"
+          className={({ isActive }) => `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`}
+        >
+          Categories Search
+        </NavLink>
+        <NavLink
+          to="/related-products"
+          className={({ isActive }) => `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`}
+        >
+          Related Products
+        </NavLink>
       </nav>
     </aside>
   );
