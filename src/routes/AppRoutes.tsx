@@ -10,6 +10,8 @@ import { ProductSearchPage } from '../features/search/pages/ProductSearchPage';
 import CategoryPage from '../features/categories/pages/CategoryPage';
 import { CategorySearchPage } from '../features/categories/pages/CategorySearchPage';
 import { RelatedProductPage } from '../features/products/pages/RelatedProductPage';
+import { CategoryGroupingPage } from '../features/categories/pages/CategoryGroupingPage';
+import { UniqueProductsPage } from '../features/products/pages/UniqueProductsPage';
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<DashboardLayout />}>
@@ -21,7 +23,9 @@ const AppRoutes = () => (
       <Route path="/search-products" element={<ProductSearchPage />} />
       <Route path="/categories" element={<CategoryPage />} />
       <Route path="/categories-search" element={<CategorySearchPage />} />
+      <Route path="/categories-group" element={<CategoryGroupingPage />} />
       <Route path="/related-products" element={<RelatedProductPage />} />
+      <Route path="/unique-products" element={<UniqueProductsPage />} />
       <Route path="search" element={<SearchPage />} />
     </Route>
   </Routes>

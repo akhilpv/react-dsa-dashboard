@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../../../app/store';
 import { ProductCard } from '../../../components/organisms/ProductCard';
 import { binarySearchIndex } from '../../../utils/binarySearchPagination';
+import { SegmentTreeSearch } from '../../../components/organisms/SegmentTreeSearch';
 export const ProductSearchPage: React.FC = () => {
   const products = useSelector((state: RootState) => state.products.products);
   const [query, setQuery] = useState('');
@@ -30,19 +31,9 @@ export const ProductSearchPage: React.FC = () => {
     <div className="max-w-4xl mx-auto p-6">
       <h2 className="text-xl font-semibold mb-4">🔍 Search Product by ID</h2>
       <div className="flex gap-2 mb-6">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Enter Product ID"
-          className="border px-3 py-2 rounded w-full"
-        />
-        <button
-          onClick={handleSearch}
-          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-        >
-          Search
-        </button>
+       
+        <SegmentTreeSearch />
+        
       </div>
 
       {foundProduct ? (

@@ -7,4 +7,5 @@ export interface Product {
   price: number;
   category: string; 
   expiryDate: string;
+  salesCount:number;
 }

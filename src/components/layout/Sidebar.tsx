@@ -47,11 +47,24 @@ const Sidebar = () => {
           Categories Search
         </NavLink>
         <NavLink
+          to="/categories-group"
+          className={({ isActive }) => `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`}
+        >
+          Categories Group
+        </NavLink>
+        <NavLink
           to="/related-products"
           className={({ isActive }) => `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`}
         >
           Related Products
         </NavLink>
+        <NavLink
+          to="/unique-products"
+          className={({ isActive }) => `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`}
+        >
+          Unique Products
+        </NavLink>
+        
       </nav>
     </aside>
   );

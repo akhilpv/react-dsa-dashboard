@@ -7,7 +7,7 @@ import { useProductTabs } from '../hooks/useProductTabs';
 import { ProductCard } from '../../../components/organisms/ProductCard';
 import { RecentlyViewedProducts } from '../../../components/molecules/RecentlyViewedProducts';
 import { updateRecentlyViewed } from '../../../utils/recentlyViewed';
-
+import { ProductRecommendations } from '../../../components/organisms/ProductRecommendations';
 const tabItems = [
   { id: 'overview', label: 'Overview' },
   { id: 'stock', label: 'Stock' },
@@ -74,6 +74,7 @@ const ProductDetailPage = () => {
         </div>
       )}
       <RecentlyViewedProducts productIds={recentIds} currentProductId={productId!} />
+      {productId && <ProductRecommendations productId={productId} />}
     </div>
   );
 };
