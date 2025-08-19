@@ -48,9 +48,18 @@ const productSlice = createSlice({
       if (state.products[index]) {
         state.products[index].stock += change;
       }
+    },
+    addDiscountToProduct: (
+      state,
+      action: PayloadAction<{ productId: string; discount: number }>
+    ) => {
+      const product = state.products.find(p => p.id === action.payload.productId);
+      if (product) {
+        product.discount = action.payload.discount;
+      }
     }
   },
 });
 
-export const { addProduct, undo, redo, incrementSalesCount,updateStock } = productSlice.actions;
+export const { addProduct, undo, redo, incrementSalesCount,updateStock,addDiscountToProduct } = productSlice.actions;
 export default productSlice.reducer;

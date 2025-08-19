@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../../app/store';
 import { ProductTabs } from '../../../components/organisms/ProductTabs';
 import { useProductTabs } from '../hooks/useProductTabs';
@@ -8,6 +8,7 @@ import { ProductCard } from '../../../components/organisms/ProductCard';
 import { RecentlyViewedProducts } from '../../../components/molecules/RecentlyViewedProducts';
 import { updateRecentlyViewed } from '../../../utils/recentlyViewed';
 import { ProductRecommendations } from '../../../components/organisms/ProductRecommendations';
+import { addDiscountToProduct } from '../slices/productSlice';
 const tabItems = [
   { id: 'overview', label: 'Overview' },
   { id: 'stock', label: 'Stock' },
@@ -22,6 +23,8 @@ const ProductDetailPage = () => {
   const product = useSelector((state: RootState) =>
     state.products.products.find((p) => p.id.toString() === productId)
   );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (productId) {
@@ -40,6 +43,16 @@ const ProductDetailPage = () => {
 
   if (!product) return <p>Product not found</p>;
 
+  // helper to apply discount
+  const handleApplyDiscount = (discount: number) => {
+    dispatch(addDiscountToProduct({ productId: product.id, discount }));
+  };
+
+  // calculate final price if discount exists
+  const discountedPrice = product.discount
+    ? (product.price * (1 - product.discount / 100)).toFixed(2)
+    : null;
+
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">{product.name}</h2>
@@ -57,12 +70,54 @@ const ProductDetailPage = () => {
           </div>
         )}
         {activeTab === 'stock' && (
-          <p><strong>Status:</strong> {product.status}<br /><strong>Stock:</strong> {product.stock}</p>
+          <p>
+            <strong>Status:</strong> {product.status}
+            <br />
+            <strong>Stock:</strong> {product.stock}
+          </p>
         )}
         {activeTab === 'pricing' && (
-          <p><strong>Price:</strong> ${product.price}</p>
+          <div>
+            <p><strong>Price:</strong> ${product.price}</p>
+            {product.discount && (
+              <p className="text-green-600 font-semibold">
+                Discounted Price: ${discountedPrice} ({product.discount}% OFF)
+              </p>
+            )}
+
+            {/* Discount Buttons */}
+            <div className="mt-3 flex gap-2">
+              <button
+                onClick={() => handleApplyDiscount(10)}
+                className="px-3 py-1 bg-blue-500 text-white rounded"
+              >
+                Apply 10% Discount
+              </button>
+              <button
+                onClick={() => handleApplyDiscount(25)}
+                className="px-3 py-1 bg-green-600 text-white rounded"
+              >
+                Apply 25% Discount
+              </button>
+              <button
+                onClick={() => handleApplyDiscount(50)}
+                className="px-3 py-1 bg-red-500 text-white rounded"
+              >
+                Apply 50% Discount
+              </button>
+            </div>
+          </div>
         )}
       </div>
+
+      {/* Discounts Section */}
+      {product.discount && (
+        <div className="mt-6 p-4 border rounded-lg bg-yellow-50">
+          <h3 className="text-lg font-semibold">Discounts</h3>
+          <p>{product.discount}% OFF applied. Final Price: ${discountedPrice}</p>
+        </div>
+      )}
+
       {relatedProducts.length > 0 && (
         <div className="mt-10">
           <h3 className="text-xl font-semibold mb-4">Related Products</h3>

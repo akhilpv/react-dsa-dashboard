@@ -12,6 +12,7 @@ import { CategorySearchPage } from '../features/categories/pages/CategorySearchP
 import { RelatedProductPage } from '../features/products/pages/RelatedProductPage';
 import { CategoryGroupingPage } from '../features/categories/pages/CategoryGroupingPage';
 import { UniqueProductsPage } from '../features/products/pages/UniqueProductsPage';
+import DiscountPage from '../features/discounts/pages/DiscountPage';
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<DashboardLayout />}>
@@ -27,6 +28,7 @@ const AppRoutes = () => (
       <Route path="/related-products" element={<RelatedProductPage />} />
       <Route path="/unique-products" element={<UniqueProductsPage />} />
       <Route path="search" element={<SearchPage />} />
+      <Route path="/discounts" element={<DiscountPage />} />
     </Route>
   </Routes>
 );

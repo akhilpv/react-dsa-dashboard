@@ -4,7 +4,7 @@ import { addProduct, undo, redo } from '../slices/productSlice';
 import { useToastQueue } from '../../notifications/hooks/useToastQueue';
 import type { RootState } from '../../../app/store';
 import { Link } from 'react-router-dom';
-
+import { BulkImport } from '../../../components/organisms/BulkImport';
 const UndoRedoPage = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
@@ -135,6 +135,7 @@ const UndoRedoPage = () => {
         >
           Redo
         </button>
+        <BulkImport/>
       </div>
       <ul className="space-y-2">
         {products.map((p) => (

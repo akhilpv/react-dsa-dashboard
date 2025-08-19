@@ -64,6 +64,12 @@ const Sidebar = () => {
         >
           Unique Products
         </NavLink>
+        <NavLink
+          to="/discounts"
+          className={({ isActive }) => `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`}
+        >
+          Discounts
+        </NavLink>
         
       </nav>
     </aside>

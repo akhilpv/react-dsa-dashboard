@@ -7,6 +7,7 @@ import { combineReducers } from 'redux';
 import productTabsReducer from  '../features/products/slices/tabsSlice'
 import recentSearchReducer from '../features/search/slices/recentSearchSlice';
 import categoryReducer from '../features/categories/slices/categorySlice';
+import discountsReducer from '../features/discounts/slices/discountSlice'
 const persistConfig = {
   key: 'root',
   storage,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   productTabs: productTabsReducer,
   recentSearch: recentSearchReducer,
   categories: categoryReducer, 
+  discounts: discountsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
