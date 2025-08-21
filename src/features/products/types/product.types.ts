@@ -8,4 +8,5 @@ export interface Product {
   category: string; 
   expiryDate: string;
   salesCount:number;
+  discount:number;
 }

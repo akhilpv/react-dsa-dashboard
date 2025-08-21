@@ -5,6 +5,7 @@ import { useToastQueue } from '../../notifications/hooks/useToastQueue';
 import type { RootState } from '../../../app/store';
 import { Link } from 'react-router-dom';
 import { BulkImport } from '../../../components/organisms/BulkImport';
+
 const UndoRedoPage = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
@@ -16,14 +17,20 @@ const UndoRedoPage = () => {
 
   const dispatch = useDispatch();
   const showToast = useToastQueue();
-  
+
   const products = useSelector((state: RootState) => state.products.products);
-  
-  const nameSet = new Set(products.map(p => p.name.toLowerCase()));
   const categories = useSelector((state: RootState) => state.categories.list);
-  console.log("categories",categories)
+
+  // 🔹 Create lookup map for categories
+  const categoryMap = categories.reduce<Record<string, string>>((acc, cat: any) => {
+    acc[cat.id] = cat.name;
+    return acc;
+  }, {});
+
+  const nameSet = new Set(products.map((p) => p.name.toLowerCase()));
+
   const handleAdd = () => {
-    if (!name || !price || !sku || !stock || !expiryDate) {
+    if (!name || !price || !sku || !stock || !expiryDate || !category) {
       showToast('Please fill all fields', 'error', 'Add Product');
       return;
     }
@@ -32,29 +39,29 @@ const UndoRedoPage = () => {
       return;
     }
 
-  dispatch(
-    addProduct({
-      id: Date.now(),
-      name,
-      price: parseFloat(price),
-      sku,
-      status,
-      stock: parseInt(stock),
-      category, 
-      expiryDate,
-    })
-  );
+    dispatch(
+      addProduct({
+        id: Date.now(),
+        name,
+        price: parseFloat(price),
+        sku,
+        status,
+        stock: parseInt(stock),
+        category, // 🔹 save category id here
+        expiryDate,
+      })
+    );
 
-  showToast(`Added "${name}" successfully`, 'success', 'Add Product');
+    showToast(`Added "${name}" successfully`, 'success', 'Add Product');
 
-  setName('');
-  setPrice('');
-  setSku('');
-  setStock('');
-  setStatus('in_stock');
-  setCategory('');
-  setExpiryDate('');
-};
+    setName('');
+    setPrice('');
+    setSku('');
+    setStock('');
+    setStatus('in_stock');
+    setCategory('');
+    setExpiryDate('');
+  };
 
   return (
     <div>
@@ -62,6 +69,7 @@ const UndoRedoPage = () => {
         Undo / Redo Stack
       </h2>
       <div className="flex gap-2 mb-4">
+        {/* Inputs */}
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -97,18 +105,17 @@ const UndoRedoPage = () => {
           className="border p-2 rounded w-24"
         />
         <select
-  value={category}
-  onChange={(e) => setCategory(e.target.value)}
-  className="border p-2 rounded w-40"
->
-  <option value="">Select Category</option>
-  {categories.map((cat) => (
-    <option key={cat.id} value={cat.name}>
-      {cat.name}
-    </option>
-  ))}
-</select>
-
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="border p-2 rounded w-40"
+        >
+          <option value="">Select Category</option>
+          {categories.map((cat: any) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
         <input
           type="date"
           value={expiryDate}
@@ -122,6 +129,8 @@ const UndoRedoPage = () => {
           Add
         </button>
       </div>
+
+      {/* Undo/Redo Buttons */}
       <div className="flex gap-2 mb-4">
         <button
           onClick={() => dispatch(undo())}
@@ -135,8 +144,10 @@ const UndoRedoPage = () => {
         >
           Redo
         </button>
-        <BulkImport/>
+        <BulkImport />
       </div>
+
+      {/* Product List */}
       <ul className="space-y-2">
         {products.map((p) => (
           <li
@@ -148,9 +159,9 @@ const UndoRedoPage = () => {
                 <strong>{p.name}</strong> (SKU: {p.sku})
               </Link>
               <br />
-              <span>Status: {p.status}</span> | <span>Stock: {p.stock}</span>
-              
-              <span>Category: {p.category}</span> 
+              <span>Status: {p.status}</span> | <span>Stock: {p.stock}</span> |{" "}
+              {/* 🔹 show category name from lookup */}
+              <span>Category: {categoryMap[p.category] || 'Unknown'}</span> |{" "}
               <span className="text-sm text-gray-600">Expiry: {p.expiryDate}</span>
             </div>
             <span className="text-right font-medium">${p.price}</span>

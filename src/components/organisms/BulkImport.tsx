@@ -10,7 +10,7 @@ export const BulkImport = () => {
 
   const handleBulkImport = () => {
     const categories: Category[] = [
-      { id: 1, name: "Medicines" },
+    { id: 1, name: "Medicines" },
     { id: 2, name: "Painkillers", parentId: 1 },
     { id: 3, name: "Antibiotics", parentId: 1 },
     { id: 4, name: "Cough Syrups", parentId: 1 },

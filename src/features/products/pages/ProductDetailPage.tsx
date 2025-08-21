@@ -9,6 +9,7 @@ import { RecentlyViewedProducts } from '../../../components/molecules/RecentlyVi
 import { updateRecentlyViewed } from '../../../utils/recentlyViewed';
 import { ProductRecommendations } from '../../../components/organisms/ProductRecommendations';
 import { addDiscountToProduct } from '../slices/productSlice';
+
 const tabItems = [
   { id: 'overview', label: 'Overview' },
   { id: 'stock', label: 'Stock' },
@@ -19,7 +20,9 @@ const ProductDetailPage = () => {
   const { productId } = useParams<{ productId: string }>();
   const { activeTab, changeTab } = useProductTabs(productId || '');
   const [recentIds, setRecentIds] = useState<string[]>([]);
+
   const products = useSelector((state: RootState) => state.products.products);
+  const categories = useSelector((state: RootState) => state.categories.list);
   const product = useSelector((state: RootState) =>
     state.products.products.find((p) => p.id.toString() === productId)
   );
@@ -33,12 +36,22 @@ const ProductDetailPage = () => {
     }
   }, [productId]);
 
+  // 🔹 Category lookup
+  const categoryMap = useMemo(
+    () =>
+      categories.reduce<Record<string, string>>((acc, cat: any) => {
+        acc[cat.id] = cat.name;
+        return acc;
+      }, {}),
+    [categories]
+  );
+
   const relatedProducts = useMemo(() => {
     if (!product) return [];
     return products
       .filter((p) => p.category === product.category && p.id !== product.id)
-      .sort((a, b) => b.popularity - a.popularity) 
-      .slice(0, 4); 
+      .sort((a, b) => b.popularity - a.popularity)
+      .slice(0, 4);
   }, [product, products]);
 
   if (!product) return <p>Product not found</p>;
@@ -66,7 +79,8 @@ const ProductDetailPage = () => {
         {activeTab === 'overview' && (
           <div>
             <p><strong>SKU:</strong> {product.sku}</p>
-            <p><strong>Category:</strong> {product.category}</p>
+            {/* 🔹 Replace id with category name */}
+            <p><strong>Category:</strong> {categoryMap[product.category] || 'Unknown'}</p>
           </div>
         )}
         {activeTab === 'stock' && (
@@ -128,6 +142,7 @@ const ProductDetailPage = () => {
           </div>
         </div>
       )}
+
       <RecentlyViewedProducts productIds={recentIds} currentProductId={productId!} />
       {productId && <ProductRecommendations productId={productId} />}
     </div>
